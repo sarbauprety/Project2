@@ -1,0 +1,85 @@
+---
+title: "Untitled"
+author: "Sarba"
+date: "11/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Loading an R package
+library(tidyverse)
+```
+
+```{r}
+# Importing Data
+data <- read_csv("/home/upretys/STA 518/Project/Project2/province-wise[1].csv")
+```
+
+```{r}
+# Deleting rows and column
+df <- subset(data, Sex != "Total" & Province != "Nepal") %>%
+  select(-5)
+```
+
+
+```{r}
+# Renaming column
+df <- df%>% 
+  rename("Literate population" = "Population who are Can read & write", "Total population above 5" = "Population Aged 5 years & above")
+```
+
+
+
+```{r}
+# Mutating a new column
+df <- mutate(df, `Literacy rate` = `Literate population`/`Total population above 5`)
+```
+
+```{r}
+# # To determine which provinces have literacy rate greater than 0.7
+df %>%
+  filter(`Literacy rate` > 0.7) %>%
+  select("Province", "Literacy rate") %>%
+  arrange(desc(`Literacy rate`)) 
+
+```
+
+```{r}
+# Visualization of the data
+ggplot(df, aes(x = `Literacy rate`)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "pink", fill = "black") +
+  labs(x = "Literacy Rate", title = "Literacy Rate")
+```
+
+
+```{r}
+is_tibble(data)
+is_tibble(df)
+```
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
