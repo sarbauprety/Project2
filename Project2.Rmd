@@ -1,8 +1,10 @@
 ---
-title: "Untitled"
+title: "Project 2"
 author: "Sarba"
 date: "11/27/2021"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -18,13 +20,14 @@ library(tidyverse)
 # Importing Data
 data <- read_csv("/home/upretys/STA 518/Project/Project2/province-wise[1].csv")
 ```
+I imported the dataset using the read_csv function from my GitHub account.
 
 ```{r}
 # Deleting rows and column
 df <- subset(data, Sex != "Total" & Province != "Nepal") %>%
   select(-5)
 ```
-
+In the dataset, there were rows that were repetitive and not very useful. I used the subset function to select every row except the ones that include "Total" and "Nepal". I, then, used select() to delete the fifth column of the dataset. This led to a tidier dataset.
 
 ```{r}
 # Renaming column
@@ -32,13 +35,13 @@ df <- df%>%
   rename("Literate population" = "Population who are Can read & write", "Total population above 5" = "Population Aged 5 years & above")
 ```
 
-
+I used the rename function to rename long variable names to something that is easier to remember and write as working with longer variable names might result in misspelling or there might be case errors or punctuation errors.
 
 ```{r}
 # Mutating a new column
 df <- mutate(df, `Literacy rate` = `Literate population`/`Total population above 5`)
 ```
-
+I used mutate() to add a new column called literacy rate by diving literate population by total population above 5.
 ```{r}
 # # To determine which provinces have literacy rate greater than 0.7
 df %>%
@@ -47,7 +50,7 @@ df %>%
   arrange(desc(`Literacy rate`)) 
 
 ```
-
+I used this function to help me understand which of the provinces have a population with a literacy rate over 0.7. As I needed only two columns to know that information, I used the select function to isolate province and literacy rate. Then, I used the arrange(desc) function so that it can show me the province with the highest literacy first, and the lowest literacy rate last.
 ```{r}
 # Visualization of the data
 ggplot(df, aes(x = `Literacy rate`)) +
@@ -55,6 +58,7 @@ ggplot(df, aes(x = `Literacy rate`)) +
   labs(x = "Literacy Rate", title = "Literacy Rate")
 ```
 
+I used histogram to visualize the data so that it is easy to know how many provinces have a certain literacy rate. In this case, 3 out of the 7 provinces have a literacy rate between 0.75-0.8. Only 1 of the provinces has a literacy rate of below 0.4.
 
 ```{r}
 is_tibble(data)
